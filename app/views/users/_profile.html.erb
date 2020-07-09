@@ -20,3 +20,27 @@
 <div class="row">
 	<%= link_to '', edit_user_path(user), class: "col-xs-12 btn btn-default glyphicon glyphicon-wrench edit_user_#{user.id}" %>
 </div>
+<% @user ||= current_user %>
+<div class="stats">
+  <a href="<%= following_user_path(user) %>">
+    <strong id="following" class="stat">
+      <%= user.followings.count %>
+    </strong>
+    following
+  </a>
+  <a href="<%= followers_user_path(user) %>">
+    <strong id="followers" class="stat">
+      <%= user.followers.count %>
+    </strong>
+    followers
+  </a>
+</div>
+<% unless current_user?(user) %>
+  <div id="follow_form">
+  <% if current_user.following?(user) %>
+     <p><%=link_to "フォロー済み", user_relationships_path(user.id), method: :delete %></p>
+  <% else %>
+    <p><%=link_to "フォローする", user_relationships_path(user.id), method: :post %></p>
+  <% end %>
+  </div>
+<% end %>
